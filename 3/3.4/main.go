@@ -24,14 +24,32 @@ func main() {
 	}
 
 	fmt.Println("-----------------------")
+	{
+		// iota(列挙)
+		// iotaはギリシャ文字ιで、「小さい量」を意味する
+		const (
+			Apple  = iota        // 0
+			Orenge = iota + iota // 1 + 1 = 2
+			Banana               // 2 + 2 = 4
+			Grape  = iota        // 3
+		)
+		fmt.Println(Apple, Orenge, Banana, Grape)
+	}
 
-	// iota(列挙)
-	const (
-		Apple  = iota
-		Orenge = iota + iota
-		Banana
-		Grape = iota
-	)
-	fmt.Println(Apple, Orenge, Banana, Grape)
+	fmt.Println("-----------------------")
+	{
+		type Fruit int
+		type Animal int
+
+		const (
+			Orenge Fruit = iota //型を指定できる
+			Apple
+			Banana Animal = iota // 別の方を混同させるのはよくないけどできる
+			Cherry
+		)
+
+		fmt.Println(Orenge, Apple)
+		fmt.Println(reflect.TypeOf(Orenge), reflect.TypeOf(Apple), reflect.TypeOf(Banana), reflect.TypeOf(Cherry))
+	}
 
 }
