@@ -51,5 +51,21 @@ func main() {
 		fmt.Println(Orenge, Apple)
 		fmt.Println(reflect.TypeOf(Orenge), reflect.TypeOf(Apple), reflect.TypeOf(Banana), reflect.TypeOf(Cherry))
 	}
+	fmt.Println("-----------------------")
+	{
+		i := 2
+		switch i {
+		case 1:
+			fmt.Println("1")
+		case 2:
+			fmt.Println("2 or ")
+			fallthrough // 次のcaseも実行する
+		case 3, 4:
+			fmt.Println("3")
+		default:
+			fmt.Println("other")
+		}
+
+	}
 
 }
