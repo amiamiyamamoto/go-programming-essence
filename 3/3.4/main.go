@@ -67,5 +67,20 @@ func main() {
 		}
 
 	}
-
+	fmt.Println("-----------------------")
+	{
+		a := make([]int, 0, 100)
+		for i := 0; i < 100; i++ {
+			a = append(a, i)
+		}
+		a2 := make([]int, 0, len(a))
+		for i := 0; i < len(a); i++ {
+			if i%2 == 0 {
+				//奇数は削除する
+				a2 = append(a2, a[i])
+			}
+		}
+		a = a2
+		fmt.Println(a)
+	}
 }
