@@ -83,4 +83,14 @@ func main() {
 		a = a2
 		fmt.Println(a)
 	}
+	{
+		a := make([]int, 0, 100)
+		for i := 0; i < 100; i++ {
+			a = append(a, i)
+		}
+
+		n := 50
+		a = append(a[:n], a[n+1:]...) //n番目を削除
+		fmt.Println(a)
+	}
 }
