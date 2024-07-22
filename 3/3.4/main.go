@@ -67,7 +67,7 @@ func main() {
 		}
 
 	}
-	fmt.Println("-----------------------")
+	//スライス
 	{
 		a := make([]int, 0, 100)
 		for i := 0; i < 100; i++ {
@@ -107,5 +107,12 @@ func main() {
 		// a := []int{1, 2, 3}
 		// b := []int{4, 5}
 		// fmt.Println(copy(a, b), a, b)
+	}
+	//文字列
+	{
+		name := "ami"
+		fmt.Printf("%c", name[0])
+		// fmt.Println(name, name[0])
+		// name[0] = "A" // 文字列はイミュータブルなのでエラーになる
 	}
 }
