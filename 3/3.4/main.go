@@ -99,8 +99,13 @@ func main() {
 			a = append(a, i)
 		}
 		n := 50
-		fmt.Println("==========================================", copy(a[n:], a[n+1:]), "==========================================", a, "==========================================")
-		// a = a[:n+copy(a[n:], a[n+1:])]
-		// fmt.Println(a)
+		fmt.Println("a[n+1:]", a[n+1:])
+		fmt.Println("a[:n]", a[:n])
+		a = append(a[:n+copy(a[n:], a[n+1:])])
+		fmt.Println(a, len(a))
+
+		// a := []int{1, 2, 3}
+		// b := []int{4, 5}
+		// fmt.Println(copy(a, b), a, b)
 	}
 }
