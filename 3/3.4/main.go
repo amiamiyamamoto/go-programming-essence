@@ -118,7 +118,13 @@ func main() {
 	{
 		s := "Hello"
 		b := []byte(s)
-		b[0] = 'H'
+		b[0] = 'h'
 		s = string(b) //イミュータブルなので再代入が必要
+	}
+	{
+		s := "こんにちわ世界"
+		rs := []rune(s) //rune型でUnicodeのコードポイント列に変換できる
+		rs[4] = 'は'
+		s = string(rs)
 	}
 }
