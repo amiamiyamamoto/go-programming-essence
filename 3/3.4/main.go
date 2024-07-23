@@ -115,4 +115,10 @@ func main() {
 		// fmt.Println(name, name[0])
 		// name[0] = "A" // 文字列はイミュータブルなのでエラーになる
 	}
+	{
+		s := "Hello"
+		b := []byte(s)
+		b[0] = 'H'
+		s = string(b) //イミュータブルなので再代入が必要
+	}
 }
