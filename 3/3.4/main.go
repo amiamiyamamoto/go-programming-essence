@@ -127,4 +127,15 @@ func main() {
 		rs[4] = 'は'
 		s = string(rs)
 	}
+	//map
+	{
+		m := make(map[string]int, 1)
+		m = map[string]int{
+			"apple":  100,
+			"banana": 200,
+		}
+		if v, ok := m["grape"]; !ok {
+			fmt.Println(v, ok)
+		}
+	}
 }
