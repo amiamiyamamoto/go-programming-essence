@@ -167,4 +167,14 @@ func main() {
 		}
 		showName(&u)
 	}
+	// ポインタ
+	{
+		type User struct {
+			Name string
+			Age  int
+		}
+		u := new(User) //ポインタを返す
+		u.Name = "ami"
+		u.Age = 33
+	}
 }
