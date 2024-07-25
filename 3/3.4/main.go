@@ -137,5 +137,15 @@ func main() {
 		if v, ok := m["grape"]; !ok {
 			fmt.Println(v, ok)
 		}
+		for k, v := range m {
+			fmt.Printf("key:%v, value:%v\n", k, v)
+		}
+	}
+	//型宣言
+	{
+		type MySgring string
+		a := "hello"
+		var ms MySgring = MySgring(a)
+		fmt.Println(ms)
 	}
 }
