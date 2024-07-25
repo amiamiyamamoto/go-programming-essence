@@ -148,4 +148,23 @@ func main() {
 		var ms MySgring = MySgring(a)
 		fmt.Println(ms)
 	}
+	// 構造体
+	{
+		// 関数の引数などにstructを渡すと、都度コピーが行われるので、
+		// コピーのオーバーヘッドをなくすのならポインタを使うといい
+		type user struct {
+			Name string
+			age  int
+		}
+
+		showName := func(user *user) {
+			fmt.Println(user.Name)
+		}
+
+		u := user{
+			Name: "ami",
+			age:  33,
+		}
+		showName(&u)
+	}
 }
