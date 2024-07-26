@@ -6,6 +6,16 @@ import (
 )
 
 func main() {
+	basic()
+}
+
+type Value int
+
+func (v *Value) Add(n Value) {
+	*v += n
+}
+
+func basic() {
 	{
 		const n = 1
 		//constは使われる場所でそれぞれ型が決まるためコンパイルエラーにならない
@@ -177,4 +187,11 @@ func main() {
 		u.Name = "ami"
 		u.Age = 33
 	}
+	{
+
+		v := Value(1)
+		v.Add(2)
+		fmt.Println(v)
+	}
+
 }
