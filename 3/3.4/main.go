@@ -7,6 +7,7 @@ import (
 
 func main() {
 	basic()
+	interfaceAny()
 }
 
 type Value int
@@ -193,5 +194,19 @@ func basic() {
 		v.Add(2)
 		fmt.Println(v)
 	}
+}
 
+func interfaceAny() {
+	var v interface{}
+	v = 1
+	v = "こんにちは"
+	n := v.(string)
+	fmt.Println(n)
+
+	//間違った方で型アサーションするとpanicが発生するので、以下のように確認する
+	s, ok := v.(int)
+	fmt.Println(s)
+	if !ok {
+		fmt.Println("vはintではない")
+	}
 }
