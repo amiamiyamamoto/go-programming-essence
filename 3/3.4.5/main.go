@@ -21,6 +21,8 @@ func main() {
 	}
 	fmt.Println(string(b[:n]))
 	defertest()
+
+	closure()
 }
 func defertest() {
 	defer fmt.Println("6")
@@ -48,4 +50,13 @@ func doSomething(dir string) error {
 	return nil
 	// Windowsではファイルハンドルが開かれた状態でディレクトリを削除できない
 
+}
+
+func closure() {
+	var n = 1
+	defer func() {
+		fmt.Println(n)
+	}()
+	defer fmt.Println(n)
+	n = 2
 }
