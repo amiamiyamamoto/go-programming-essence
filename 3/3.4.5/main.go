@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 func main() {
@@ -19,4 +20,32 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Println(string(b[:n]))
+	defertest()
+}
+func defertest() {
+	defer fmt.Println("6")
+	defer fmt.Println("5")
+	defer fmt.Println("4")
+	fmt.Println("1")
+	fmt.Println("2")
+	fmt.Println("3")
+}
+
+func doSomething(dir string) error {
+	err := os.Mkdir(dir, 0755)
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(dir)
+
+	f, err := os.Create(filepath.Join(dir, "data2.txt"))
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	//ファイルを使った処理
+	return nil
+	// Windowsではファイルハンドルが開かれた状態でディレクトリを削除できない
+
 }
