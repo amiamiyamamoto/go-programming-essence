@@ -54,9 +54,9 @@ func doSomething(dir string) error {
 
 func closure() {
 	var n = 1
+	defer fmt.Println(n) //nはキャプチャされて1が出力される
 	defer func() {
-		fmt.Println(n)
+		fmt.Println(n) //nはキャプチャされないので2が出力される
 	}()
-	defer fmt.Println(n)
 	n = 2
 }
