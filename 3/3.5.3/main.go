@@ -11,7 +11,7 @@ func main() {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			fmt.Println(i) //forが先に回ってしまい、iが10になってしまう場合がある。けどなってない
+			fmt.Println(i) //go1.22からiがキャプチャされるようになった
 		}()
 	}
 	wg.Wait()
