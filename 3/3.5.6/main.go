@@ -11,11 +11,13 @@ import (
 )
 
 func downloadCSV(wg *sync.WaitGroup, urls []string, ch chan []byte) {
+
 	defer wg.Done()
 	defer close(ch)
-
 	// HTTPサーバからのダウンロード
 	for _, u := range urls {
+		fmt.Println("\n\ndownloaded!\n\n")
+
 		resp, err := http.Get(u)
 		if err != nil {
 			log.Println("cannot download CSV: ", err)
@@ -36,8 +38,8 @@ func insertRedords(records []string) {
 }
 func main() {
 	urls := []string{
-		"http://www.mi.u-tokyo.ac.jp/consortium2/data/Lynx-new.csv",
 		"http://www.mi.u-tokyo.ac.jp/consortium2/data/blsfood_new.csv",
+		"http://www.mi.u-tokyo.ac.jp/consortium2/data/Lynx-new.csv",
 		// "http://my-server.com/data03.csv",
 	}
 
@@ -57,5 +59,7 @@ func main() {
 			insertRedords(records)
 		}
 	}
+	fmt.Println("before wait")
 	wg.Wait()
+	fmt.Println("done")
 }
