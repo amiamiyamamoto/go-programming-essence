@@ -16,7 +16,6 @@ func downloadCSV(wg *sync.WaitGroup, urls []string, ch chan []byte) {
 	defer close(ch) //(5)
 	// HTTPサーバからのダウンロード
 	for _, u := range urls {
-		fmt.Println("\n\ndownloaded!\n\n")
 
 		resp, err := http.Get(u)
 		if err != nil {
@@ -54,12 +53,13 @@ func main() {
 		for {
 			records, err := r.Read()
 			if err != nil {
+				if err == io.EOF {
+					break
+				}
 				log.Fatal(err)
 			}
 			insertRedords(records)
 		}
 	}
-	fmt.Println("before wait")
 	wg.Wait()
-	fmt.Println("done")
 }
