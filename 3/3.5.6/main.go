@@ -13,7 +13,7 @@ import (
 func downloadCSV(wg *sync.WaitGroup, urls []string, ch chan []byte) {
 
 	defer wg.Done()
-	defer close(ch)
+	defer close(ch) //(5)
 	// HTTPサーバからのダウンロード
 	for _, u := range urls {
 		fmt.Println("\n\ndownloaded!\n\n")
@@ -30,7 +30,7 @@ func downloadCSV(wg *sync.WaitGroup, urls []string, ch chan []byte) {
 			continue
 		}
 		resp.Body.Close()
-		ch <- b
+		ch <- b //(3)
 	}
 }
 func insertRedords(records []string) {
@@ -43,13 +43,13 @@ func main() {
 		// "http://my-server.com/data03.csv",
 	}
 
-	ch := make(chan []byte)
+	ch := make(chan []byte) //(1)
 
 	var wg sync.WaitGroup
 	wg.Add(1)
-	go downloadCSV(&wg, urls, ch)
+	go downloadCSV(&wg, urls, ch) //(2)
 
-	for b := range ch {
+	for b := range ch { //(4)
 		r := csv.NewReader(bytes.NewReader(b))
 		for {
 			records, err := r.Read()
