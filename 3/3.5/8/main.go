@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	DOKO uint8 = iota
-	ZUN
+	DOKO uint8 = 0
+	ZUN  uint8 = 1
 )
 
 func main() {
@@ -29,7 +29,7 @@ L:
 		case <-dkch:
 			zunDoko = zunDoko << 1
 			fmt.Println("DOKO", fmt.Sprintf("%08b", zunDoko))
-			if (zunDoko & 0b1111) == 14 {
+			if (zunDoko & 0b00001111) == 0b00001110 {
 				fmt.Println("KIYOSHI!!")
 				break L
 			}
