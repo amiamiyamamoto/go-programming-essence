@@ -2,39 +2,34 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
 )
 
-var zunDoko int8
-
 const (
-	DOKO int8 = iota
+	DOKO uint8 = iota
 	ZUN
 )
 
 func main() {
-	// var mu sync.Mutex
-
-	znch := make(chan int8)
-	dkch := make(chan int8)
+	znch := make(chan uint8)
+	dkch := make(chan uint8)
 
 	go makeZun(znch)
-
 	go makeDoko(dkch)
+
+	var zunDoko uint8
 
 L:
 	for {
 		select {
 		case zn := <-znch:
-			fmt.Println("ZUN")
-			zunDoko = zunDoko << 1
-			zunDoko = zunDoko | zn
-
+			zunDoko = (zunDoko << 1) + zn
+			format := fmt.Sprintf("%08b", zunDoko)
+			fmt.Println("ZUN ", format)
 		case <-dkch:
-			fmt.Println("DOKO")
 			zunDoko = zunDoko << 1
-			if (zunDoko & 0b00001111) == 14 {
+			format := fmt.Sprintf("%08b", zunDoko)
+			fmt.Println("DOKO", format)
+			if (zunDoko & 0b1111) == 14 {
 				fmt.Println("KIYOSHI!!")
 				break L
 			}
@@ -45,23 +40,14 @@ L:
 	fmt.Println("end")
 }
 
-func makeZun(znch chan int8) {
+func makeZun(znch chan uint8) {
 	for {
-		if randomBinary() == 1 {
-			znch <- ZUN
-		}
+		znch <- ZUN
 	}
 }
 
-func makeDoko(dkch chan int8) {
+func makeDoko(dkch chan uint8) {
 	for {
-		if randomBinary() == 1 {
-			dkch <- DOKO
-		}
+		dkch <- DOKO
 	}
-}
-
-func randomBinary() int {
-	rand.New(rand.NewSource(time.Now().UnixNano()))
-	return rand.Intn(2)
 }
