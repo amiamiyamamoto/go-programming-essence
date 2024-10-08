@@ -28,5 +28,8 @@ func main() {
 	defer cancel()
 	go f(ctx, &wg)
 
+	// time.Sleep(3 * time.Second)
+	// cancel()
+
 	wg.Wait()
 }
