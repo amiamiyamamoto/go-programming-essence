@@ -23,6 +23,6 @@ func (r *Runner) Run() {
 
 func main() {
 	runner := NewRunner("John")
-	runner.Walk()
+	runner.Walk() //runner.Waler.Walk()のシュガー
 	runner.Run()
 }
