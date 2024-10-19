@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -12,6 +13,7 @@ func main() {
 		switch r.Method {
 		case http.MethodGet:
 			//GETの処理
+			fmt.Fprintf(w, "Hello, World!")
 		default:
 		}
 	})
