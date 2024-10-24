@@ -15,9 +15,8 @@ func main() {
 					return ""
 				}
 				return d.Format(format)
-			},
-		})
-	tmpl := `{{FormatDateTime "...." .}}`
+			}})
+	tmpl := `{{ FormatDateTime "2006年01月02日" .}}`
 	t = template.Must(t.Parse(tmpl))
 	err := t.Execute(os.Stdout, time.Now())
 	if err != nil {
