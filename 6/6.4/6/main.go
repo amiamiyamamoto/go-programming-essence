@@ -17,12 +17,14 @@ func main() {
 func generator(msg string, quit chan bool) <-chan string {
 	ch := make(chan string)
 	go func() {
-		select {
-		case ch <- fmt.Sprintf("%s", msg):
-		// nothng
-		case <-quit:
-			fmt.Println("Goroutine done")
-			return
+		for {
+			select {
+			case ch <- fmt.Sprintf("%s", msg):
+			// nothng
+			case <-quit:
+				fmt.Println("Goroutine done")
+				return
+			}
 		}
 	}()
 	return ch
