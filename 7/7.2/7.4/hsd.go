@@ -9,6 +9,11 @@ func Distance(a, b []rune) int {
 	if len(a) != len(b) {
 		return -1
 	}
+
+	if len(a) == 0 {
+		return 0
+	}
+
 	for i := range a {
 		if a[i] != b[i] {
 			dist++
