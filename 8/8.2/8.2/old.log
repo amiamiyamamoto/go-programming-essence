@@ -1,0 +1,10 @@
+goos: darwin
+goarch: amd64
+cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
+BenchmarkMakeSomething-12    	    8926	    131040 ns/op	   57165 B/op	    1755 allocs/op
+BenchmarkMakeSomething-12    	    8726	    133226 ns/op	   57166 B/op	    1755 allocs/op
+BenchmarkMakeSomething-12    	    8792	    132267 ns/op	   57166 B/op	    1755 allocs/op
+BenchmarkMakeSomething-12    	    8689	    132700 ns/op	   57165 B/op	    1755 allocs/op
+BenchmarkMakeSomething-12    	    8842	    132820 ns/op	   57166 B/op	    1755 allocs/op
+PASS
+ok  	_/Users/ami/Documents/ami/go-programming-essence/8/8.2/8.2	7.151s
