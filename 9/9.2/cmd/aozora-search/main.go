@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
+	"golang.org/x/text/encoding/japanese"
 )
 
 type Entry struct {
@@ -59,7 +60,7 @@ func findEntries(siteURL string) ([]Entry, error) {
 		}
 		println(zipURL)
 	})
-	return entiries, nil //ひとまずnilを返す
+	return entiries, nil
 }
 func findAuthorAndZIP(siteURL string) (string, string) {
 	res, err := http.Get(siteURL)
@@ -113,6 +114,10 @@ func extractText(zipURL string) (string, error) {
 			}
 			b, err := io.ReadAll(f)
 			f.Close()
+			if err != nil {
+				return "", err
+			}
+			b, err = japanese.ShiftJIS.NewDecoder().Bytes(b)
 			if err != nil {
 				return "", err
 			}
