@@ -144,7 +144,7 @@ func setupDB(dsn string) (*sql.DB, error) {
 	}
 	queries := []string{
 		`CREATE TABLE IF NOT EXISTS authors(author_id TEXT, author TEXT, PRIMARY KEY(author_id))`,
-		`CREATE TABLE IF NOT EXISTS contents(author_id TEXT, title_id TEXT, title TEXT, cotent TEXT, PRIMARY KEY(author_id, title_id))`,
+		`CREATE TABLE IF NOT EXISTS contents(author_id TEXT, title_id TEXT, title TEXT, content TEXT, PRIMARY KEY(author_id, title_id))`,
 		`CREATE VIRTUAL TABLE IF NOT EXISTS contents_fts USING fts4(words)`,
 	}
 	for _, query := range queries {
@@ -190,7 +190,7 @@ func addentry(db *sql.DB, entry *Entry, content string) error {
 
 	seg := t.Wakati(content)
 	_, err = db.Exec(`
-	RELPACE INTO contents_fts(docid, words) VALUES(?,?)
+	REPLACE INTO contents_fts(docid, words) VALUES(?,?)
 	`,
 		docID,
 		strings.Join(seg, " "),
@@ -227,6 +227,6 @@ func main() {
 			continue
 		}
 		// fmt.Println(entry.Title, entry.ZipURL)
-		// fmt.Println(content)
+		fmt.Println(content)
 	}
 }
