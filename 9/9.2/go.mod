@@ -1,4 +1,4 @@
-module github.com/amiyamamoto/aozora-search
+module github.com/amiamiyamamoto/aozora-search
 
 go 1.23
 
@@ -9,7 +9,7 @@ require (
 	github.com/ikawaha/kagome-dict/ipa v1.2.0
 	github.com/ikawaha/kagome/v2 v2.10.0
 	github.com/mattn/go-sqlite3 v1.14.24
-	golang.org/x/text v0.18.0
+	golang.org/x/text v0.19.0
 )
 
 require (
