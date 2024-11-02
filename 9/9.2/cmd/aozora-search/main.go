@@ -25,6 +25,7 @@ type Entry struct {
 	ZipURL   string
 }
 
+// findEntries は指定されたURLから作品一覧を取得する
 func findEntries(siteURL string) ([]Entry, error) {
 	res, err := http.Get(siteURL)
 	if err != nil {
@@ -62,6 +63,8 @@ func findEntries(siteURL string) ([]Entry, error) {
 	})
 	return entiries, nil
 }
+
+// 作者とZIPファイルのURLを得る
 func findAuthorAndZIP(siteURL string) (string, string) {
 	res, err := http.Get(siteURL)
 	if err != nil {
@@ -91,6 +94,8 @@ func findAuthorAndZIP(siteURL string) (string, string) {
 	u.Path = path.Join(path.Dir(u.Path), zipURL)
 	return author, u.String()
 }
+
+// ZIPファイルからテキストを抽出する
 func extractText(zipURL string) (string, error) {
 	resp, err := http.Get(zipURL)
 	if err != nil {
