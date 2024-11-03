@@ -2,6 +2,8 @@ github.com/PuerkitoBio/goquery v1.10.0 h1:6fiXdLuUvYs2OJSvNRqlNPoBm6YABE226xrbav
 github.com/PuerkitoBio/goquery v1.10.0/go.mod h1:TjZZl68Q3eGHNBA8CWaxAN7rOU1EbDz3CWuolcO5Yu4=
 github.com/andybalholm/cascadia v1.3.2 h1:3Xi6Dw5lHF15JtdcmAHD3i1+T8plmv7BQ/nsViSLyss=
 github.com/andybalholm/cascadia v1.3.2/go.mod h1:7gtRlve5FxPPgIgX36uWBX58OdBsSS6lUvCFb+h7KvU=
+github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
+github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
 github.com/ikawaha/kagome-dict v1.1.0 h1:ePU16KkyonhYLo4YDf/UExmZJBhY/6C946T1SOg1TI4=
 github.com/ikawaha/kagome-dict v1.1.0/go.mod h1:tcbTxQQll5voEBnJqGYt2zJuCouUL6buAOrpSxzo9Fg=
 github.com/ikawaha/kagome-dict/ipa v1.2.0 h1:lgehXOf2USDkBwGPEBD9sbbOBk3WlkhZ2zejPSLjIJA=
