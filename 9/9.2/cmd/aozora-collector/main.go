@@ -30,6 +30,8 @@ type Entry struct {
 }
 
 // findEntries は指定されたURLから作品一覧を取得する
+var pageURLFormat = "https://www.aozora.gr.jp/cards/%s/card%s.html"
+
 func findEntries(siteURL string) ([]Entry, error) {
 	res, err := http.Get(siteURL)
 	if err != nil {
@@ -51,7 +53,7 @@ func findEntries(siteURL string) ([]Entry, error) {
 			return
 		}
 		title := elem.Text()
-		pageURL := fmt.Sprintf("https://www.aozora.gr.jp/cards/%s/card%s.html", token[1], token[2])
+		pageURL := fmt.Sprintf(pageURLFormat, token[1], token[2])
 		author, zipURL := findAuthorAndZIP(pageURL) // 作者とZIPファイルのURLを得る
 		if zipURL != "" {
 			entiries = append(entiries, Entry{
