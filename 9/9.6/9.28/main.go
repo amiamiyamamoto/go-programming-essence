@@ -10,9 +10,9 @@ func main() {
 	app := cli.NewApp()
 	app.Flags = []cli.Flag{
 		&cli.StringFlag{
-			Name: "name",
-			// Aliases: []string{"c"},//現在StringFlagにはAliasesがない
-			Usage: "Load configuration from `FILE`",
+			Name:    "name",
+			Aliases: []string{"c"},
+			Usage:   "Load configuration from `FILE`",
 		},
 	}
 	app.Name = "score"
