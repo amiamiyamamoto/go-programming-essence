@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"os"
 
 	cli "github.com/urfave/cli/v2"
@@ -36,7 +38,35 @@ func main() {
 
 func cmdList(c *cli.Context) error {
 	if c.Bool("json") {
-		return nil
+		return listStudentsAsJSON()
 	}
+	return listStudent()
+}
+
+func listStudentsAsJSON() error {
+	score := []struct {
+		Name  string
+		Score int
+	}{
+		{
+			Name:  "Alice",
+			Score: 100,
+		},
+		{
+			Name:  "Bob",
+			Score: 90,
+		},
+	}
+	jsondata, err := json.Marshal(score)
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(jsondata))
+	return nil
+}
+
+func listStudent() error {
+	fmt.Println("Alice: 100")
+	fmt.Println("Bob: 90")
 	return nil
 }
