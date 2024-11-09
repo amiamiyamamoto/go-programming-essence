@@ -26,7 +26,10 @@ func main() {
 		tablewriter.Colors{tablewriter.FgHiRedColor, tablewriter.Bold, tablewriter.BgBlackColor},
 		tablewriter.Colors{tablewriter.BgRedColor, tablewriter.FgWhiteColor},
 	)
-
+	table.SetFooterAlignment(tablewriter.ALIGN_RIGHT)
+	table.SetFooter([]string{
+		"", "", "427.0",
+	})
 	for _, v := range data {
 		table.Append(v)
 	}
