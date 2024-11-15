@@ -8,19 +8,20 @@ import (
 	"os"
 	"time"
 
+	_ "github.com/lib/pq"
+
 	"github.com/labstack/echo/v4"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/extra/bundebug"
 )
 
-//bunのBaseModelを埋め込む
-
+// bunのBaseModelを埋め込む
 type Todo struct {
 	bun.BaseModel `bun:"table:todos,alias:t"`
 
-	ID        int64     `bun:"id.pk,autoincrement"`
-	Context   string    `bun:"content, notnull"`
+	ID        int64     `bun:"id,pk,autoincrement"`
+	Context   string    `bun:"content,notnull"`
 	Done      bool      `bun:"done"`
 	Until     time.Time `bun:"until,nullzero"`
 	CreatedAt time.Time
@@ -39,7 +40,7 @@ func main() {
 	defer db.Close()
 
 	db.AddQueryHook(bundebug.NewQueryHook(
-		//bundebug.WithVerbose(true),
+		bundebug.WithVerbose(true),
 		bundebug.FromEnv("BUNDEBUG"),
 	))
 

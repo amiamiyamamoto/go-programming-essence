@@ -4,6 +4,7 @@ go 1.22
 
 require (
 	github.com/labstack/echo/v4 v4.12.0
+	github.com/lib/pq v1.10.9
 	github.com/uptrace/bun v1.2.5
 	github.com/uptrace/bun/dialect/pgdialect v1.2.5
 	github.com/uptrace/bun/extra/bundebug v1.2.5
