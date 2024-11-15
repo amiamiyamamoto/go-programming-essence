@@ -50,6 +50,13 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var todos []Todo
+	// ctx := context.Background()
+	err = db.NewSelect().Model(&todos).Order("created_at").Scan(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "")
