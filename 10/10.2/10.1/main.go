@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"log"
 	"net/http"
 	"os"
@@ -44,22 +45,25 @@ func main() {
 		bundebug.FromEnv("BUNDEBUG"),
 	))
 
+	// テーブル作成
 	ctx := context.Background()
 	_, err = db.NewCreateTable().Model((*Todo)(nil)).IfNotExists().Exec(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var todos []Todo
-	// ctx := context.Background()
-	err = db.NewSelect().Model(&todos).Order("created_at").Scan(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "")
+		var todos []Todo
+		ctx := context.Background()
+		err := db.NewSelect().Model(&todos).Order("created_at").Scan(ctx)
+		if err != nil {
+			e.Logger.Error(err)
+			return c.Render(http.StatusBadRequest, "index", Data{
+				Errors: []error{errors.New("Cannot get todos")},
+			})
+		}
+		return c.Render(http.StatusOK, "index", Data{Todos: todos})
 	})
 	e.Logger.Fatal(e.Start(":8989"))
 }
