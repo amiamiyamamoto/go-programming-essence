@@ -30,6 +30,11 @@ type Todo struct {
 	DeletedAt time.Time `bun:",soft_delete,nullzero"`
 }
 
+type Data struct {
+	Todos  []Todo
+	Errors []error
+}
+
 func main() {
 	sqldb, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
