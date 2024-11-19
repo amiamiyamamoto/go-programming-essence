@@ -33,3 +33,17 @@
 </li>
 {{end}}
 </ul>
+<!-- 入力エリア -->
+<form action="/" method="post" id="add-todo">
+<input type="hidden" name="id" value="" />
+<p>
+	<input type="text" class="content" name="content" placeholder="What you should do?" autofocus required />
+	<span class="controls">
+		<input type="datetime-local" class="until" name="until" value="" />
+		<input type="submit" class="add" value="登録" />
+	</span>
+</p>
+</form>
+</body>
+</html>
+{{end}}
