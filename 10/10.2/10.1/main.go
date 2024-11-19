@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"database/sql"
+	"embed"
 	"errors"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -16,6 +18,9 @@ import (
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/extra/bundebug"
 )
+
+//go:embed static
+var static embed.FS
 
 // bunのBaseModelを埋め込む
 type Todo struct {
@@ -70,6 +75,12 @@ func main() {
 		}
 		return c.Render(http.StatusOK, "index", Data{Todos: todos})
 	})
+	staticFs, err := fs.Sub(static, "static")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fileServer := http.FileServer(http.FileSystem(http.FS(staticFs)))
+	e.GET("/static/*", echo.WrapHandler(http.StripPrefix("/static/", fileServer)))
 
 	e.POST("/", func(c echo.Context) error {
 		var todo Todo
