@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"embed"
 	"errors"
+	"html/template"
+	"io"
 	"io/fs"
 	"log"
 	"net/http"
@@ -22,6 +24,9 @@ import (
 //go:embed static
 var static embed.FS
 
+//go:embed templates
+var templates embed.FS
+
 // bunのBaseModelを埋め込む
 type Todo struct {
 	bun.BaseModel `bun:"table:todos,alias:t"`
@@ -38,6 +43,21 @@ type Todo struct {
 type Data struct {
 	Todos  []Todo
 	Errors []error
+}
+
+type Template struct {
+	templates *template.Template
+}
+
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
+}
+
+func formatDateTime(d time.Time) string {
+	if d.IsZero() {
+		return ""
+	}
+	return d.Format("2006-01-02 15:04")
 }
 
 func main() {
@@ -63,6 +83,12 @@ func main() {
 	}
 
 	e := echo.New()
+	e.Renderer = &Template{
+		templates: template.Must(template.New("").
+			Funcs(template.FuncMap{
+				"FormatDateTime": formatDateTime,
+			}).ParseFS(templates, "templates/*")),
+	}
 	e.GET("/", func(c echo.Context) error {
 		var todos []Todo
 		ctx := context.Background()
