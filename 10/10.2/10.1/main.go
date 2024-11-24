@@ -35,8 +35,8 @@ type Todo struct {
 	Content   string    `bun:"content,notnull"`
 	Done      bool      `bun:"done"`
 	Until     time.Time `bun:"until,nullzero"`
-	CreatedAt time.Time
-	UpdatedAt time.Time `bun:",nullzero"`
+	CreatedAt time.Time `bun:"created_at,default:current_timestamp"`
+	UpdatedAt time.Time `bun:"updated_at,default:current_timestamp"`
 	DeletedAt time.Time `bun:",soft_delete,nullzero"`
 }
 
@@ -72,6 +72,54 @@ func indexFunc(e *echo.Echo, db *bun.DB) func(c echo.Context) error {
 			})
 		}
 		return c.Render(http.StatusOK, "index", Data{Todos: todos})
+	}
+}
+
+func postFunc(e *echo.Echo, db *bun.DB) func(c echo.Context) error {
+	return func(c echo.Context) error {
+		var err error
+		var todo Todo
+		// フォームパラメータをフィールドにバインド
+		errs := echo.FormFieldBinder(c).
+			Int64("id", &todo.ID).
+			String("content", &todo.Content).
+			Bool("done", &todo.Done).
+			CustomFunc("until", customFunc(&todo)).
+			BindErrors()
+		if errs != nil {
+			e.Logger.Error(errs)
+			return c.Render(http.StatusBadRequest, "index", Data{Errors: errs})
+		} else if todo.ID == 0 {
+			// IDが0のときは登録
+			ctx := context.Background()
+			if todo.Content == "" {
+				err = errors.New("Todo not found")
+			} else {
+				_, err = db.NewInsert().Model(&todo).Exec(ctx)
+				if err != nil {
+					e.Logger.Error(err)
+					err = errors.New("Cannot update")
+				}
+			}
+		} else {
+			ctx := context.Background()
+			if c.FormValue("delete") != "" {
+				// 削除
+				_, err = db.NewDelete().Model(&todo).Where(`id = ?`, todo.ID).Exec(ctx)
+			} else {
+				// 更新
+				var orig Todo
+				err = db.NewSelect().Model(&orig).Where(`id = ?`, todo.ID).Scan(ctx)
+				if err == nil {
+					orig.Done = todo.Done
+					_, err = db.NewUpdate().Model(&orig).Where(`id = ?`, todo.ID).Exec(ctx)
+				}
+			}
+		}
+		if err != nil {
+			return c.Render(http.StatusBadRequest, "index", Data{Errors: []error{err}})
+		}
+		return c.Redirect(http.StatusFound, "/")
 	}
 }
 func main() {
@@ -111,55 +159,7 @@ func main() {
 	fileServer := http.FileServer(http.FileSystem(http.FS(staticFs)))
 	e.GET("/", indexFunc(e, db))
 	e.GET("/static/*", echo.WrapHandler(http.StripPrefix("/static/", fileServer)))
-
-	e.POST("/", func(c echo.Context) error {
-		var todo Todo
-		// フォームパラメータをフィールドにバインド
-		errs := echo.FormFieldBinder(c).
-			Int64("id", &todo.ID).
-			String("content", &todo.Content).
-			Bool("done", &todo.Done).
-			CustomFunc("until", customFunc(&todo)).
-			BindErrors()
-		if errs != nil {
-			e.Logger.Error(errs)
-			return c.Render(http.StatusBadRequest, "index", Data{Errors: errs})
-		} else if todo.ID == 0 {
-			// IDが0のときは登録
-			ctx := context.Background()
-			if todo.Content == "" {
-				err = errors.New("Todo not found")
-			} else {
-				_, err = db.NewInsert().Model(&todo).Exec(ctx)
-				if err != nil {
-					e.Logger.Error(err)
-					err = errors.New("Cannot update")
-				}
-			}
-		} else {
-			ctx := context.Background()
-			if c.FormValue("delete") != "" {
-				// 削除
-				_, err = db.NewDelete().Model(&todo).Where("id = ?", todo.ID).Exec(ctx)
-			} else {
-				// 更新
-				var orig Todo
-				err = db.NewSelect().Model(&orig).Where("id = ?", todo.ID).Scan(ctx)
-				if err == nil {
-					orig.Done = todo.Done
-					_, err = db.NewUpdate().Model(&orig).Where("id = ?", todo.ID).Exec(ctx)
-				}
-			}
-			if err != nil {
-				e.Logger.Error(err)
-				err = errors.New("Cannot update")
-			}
-		}
-		if err != nil {
-			return c.Render(http.StatusBadRequest, "index", Data{Errors: []error{err}})
-		}
-		return c.Redirect(http.StatusFound, "/")
-	})
+	e.POST("/", postFunc(e, db))
 	e.Logger.Fatal(e.Start(":8989"))
 }
 
