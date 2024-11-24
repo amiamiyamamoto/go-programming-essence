@@ -64,13 +64,13 @@ func indexFunc(e *echo.Echo, db *bun.DB) func(c echo.Context) error {
 	return func(c echo.Context) error {
 		var todos []Todo
 		ctx := context.Background()
-		err := db.NewSelect().Model(&todos).Order("created_at").Scan(ctx
+		err := db.NewSelect().Model(&todos).Order("created_at").Scan(ctx)
 		if err != nil {
 			e.Logger.Error(err)
 			return c.Render(http.StatusBadRequest, "index", Data{
-				Errors: []error{errors.New("Cannot get todos")}
+				Errors: []error{errors.New("Cannot get todos")},
 			})
-		})
+		}
 		return c.Render(http.StatusOK, "index", Data{Todos: todos})
 	}
 }
@@ -103,6 +103,12 @@ func main() {
 				"FormatDateTime": formatDateTime,
 			}).ParseFS(templates, "templates/*")),
 	}
+	staticFs, err := fs.Sub(static, "static")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fileServer := http.FileServer(http.FileSystem(http.FS(staticFs)))
 	e.GET("/", indexFunc(e, db))
 	e.GET("/static/*", echo.WrapHandler(http.StripPrefix("/static/", fileServer)))
 
