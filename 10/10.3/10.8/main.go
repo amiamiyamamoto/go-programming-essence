@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"log"
 	"os"
@@ -32,4 +33,12 @@ func main() {
 
 	db := bun.NewDB(sqldb, pgdialect.New())
 	defer db.Close()
+
+	// TODO 抽出
+	var todos []Todo
+	ctx := context.Background()
+	err = db.NewSelect().Model(&todos).Order("created_at").Where("until is not nill").Where("done is false").Scan(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
