@@ -95,6 +95,8 @@ func postFunc(e *echo.Echo, db *bun.DB) func(c echo.Context) error {
 			if todo.Content == "" {
 				err = errors.New("Todo not found")
 			} else {
+				todo.CreatedAt = time.Now()
+				todo.UpdatedAt = time.Now()
 				_, err = db.NewInsert().Model(&todo).Exec(ctx)
 				if err != nil {
 					e.Logger.Error(err)
@@ -112,6 +114,7 @@ func postFunc(e *echo.Echo, db *bun.DB) func(c echo.Context) error {
 				err = db.NewSelect().Model(&orig).Where(`id = ?`, todo.ID).Scan(ctx)
 				if err == nil {
 					orig.Done = todo.Done
+					orig.UpdatedAt = time.Now()
 					_, err = db.NewUpdate().Model(&orig).Where(`id = ?`, todo.ID).Exec(ctx)
 				}
 			}
