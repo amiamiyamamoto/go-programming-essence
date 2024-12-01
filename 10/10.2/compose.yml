@@ -1,13 +1,12 @@
-version: '3.8'
-
 services:
+
   app:
-    build: .
+    build: ./10.1
     container_name: app
     environment:
       - DATABASE_URL=postgres://postgres:password@db:5432/tododb?sslmode=disable
     volumes:
-      - .:/app
+      - ./10.1:/app
     ports:
       - "8989:8989"
     depends_on:
