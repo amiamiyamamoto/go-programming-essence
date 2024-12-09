@@ -10,4 +10,4 @@ COPY . .
 
 RUN go build -o main .
 
-CMD ["air"]
+CMD ["sleep infinity"]

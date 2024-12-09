@@ -24,5 +24,28 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
+  mailapp:
+    build: ./10.8
+    container_name: mailapp
+    environment:
+      - DATABASE_URL=postgres://postgres:password@db:5432/tododb?sslmode=disable
+      - MAIL_SERVER=http://mailhog:1025
+      - MAIL_FROM=todo-reminder@example.com
+      - MAIL_TO=user@example.com
+    volumes:
+      - ./10.8:/app
+    ports:
+      - "9898:9898"
+    depends_on:
+      - db
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+
 volumes:
   db_data:

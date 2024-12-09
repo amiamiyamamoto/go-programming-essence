@@ -41,7 +41,7 @@ func main() {
 	// TODO 抽出
 	var todos []Todo
 	ctx := context.Background()
-	err = db.NewSelect().Model(&todos).Order("created_at").Where("until is not nill").Where("done is false").Scan(ctx)
+	err = db.NewSelect().Model(&todos).Order("created_at").Where("until is not null").Where("done is false").Scan(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -61,15 +61,16 @@ func main() {
 		fmt.Fprintf(&buf, "%s %s\n", todo.Until, todo.Content)
 	}
 
-	smtpAuth := smtp.PlainAuth(
-		os.Getenv("MAIL_DOMAIN"),
-		os.Getenv("MAIL_USER"),
-		os.Getenv("MAIL_PASSWORD"),
-		os.Getenv("MAIL_AUTHSERVER"),
-	)
+	// smtpAuth := smtp.PlainAuth(
+	// 	os.Getenv("MAIL_DOMAIN"),
+	// 	os.Getenv("MAIL_USER"),
+	// 	os.Getenv("MAIL_PASSWORD"),
+	// 	os.Getenv("MAIL_AUTHSERVER"),
+	// )
 	err = smtp.SendMail(
 		os.Getenv("MAIL_SERVER"),
-		smtpAuth,
+		// smtpAuth,
+		nil,
 		from.Address,
 		[]string{os.Getenv("MAIL_TO")},
 		buf.Bytes(),
